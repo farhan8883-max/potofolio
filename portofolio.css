@@ -567,7 +567,6 @@ footer{
         justify-content: center;
         align-items: center;
         background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(20px);
         width: 100%;
         min-height: 450px;
         height: 90vh;
@@ -675,9 +674,9 @@ footer{
     padding: 3em;
 }
 
-img:hover {
+/* img:hover {
     box-shadow: 4px 4px 4px var(--first-color);
-}
+} */
 
 .comment-section {
     margin-top: 15px;
@@ -719,3 +718,88 @@ img:hover {
 #commentText {
     background-color: #ffffff;
 }
+
+ .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .card {
+      flex: 1 1 250px; /* grow, shrink, basis */
+      max-width: 300px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px #4F46E5;
+      background-color: white;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 15px;
+    }
+
+    .card-content h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .card-content p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        max-width: 100%;
+      }
+    }
+
+    .box {
+  width: 200px;
+  height: 200px;
+  background: white;
+  box-shadow: 0 8px 16px rgba(255, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.card-content a {
+    text-decoration: none;
+    color: white;
+}
+
+    .btn-submit {
+      background-color: #4F46E5; /* ungu kebiruan */
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-submit:hover {
+      background-color: #4338CA;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
