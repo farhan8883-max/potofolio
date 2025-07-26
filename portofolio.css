@@ -205,6 +205,7 @@ nav{
 .featured-text-btn>.blue-btn{
     background: var(--first-color);
     color: var(--color-white);
+    text-decoration: none;
 }
 .featured-text-btn>.blue-btn:hover{
     background: var(--first-color-hover);
