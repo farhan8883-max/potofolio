@@ -160,3 +160,167 @@ function addComment() {
       alert("Please enter both name and comment.");
   }
 }
+const slider = document.querySelector('.card-container');
+
+let isDown = false;
+let startX;
+let scrollLeft;
+
+slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+});
+
+slider.addEventListener('mouseleave', () => {
+    isDown = false;
+});
+
+slider.addEventListener('mouseup', () => {
+    isDown = false;
+});
+
+slider.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 2;
+    slider.scrollLeft = scrollLeft - walk;
+});
+const canvas = document.getElementById("starfield");
+const ctx = canvas.getContext("2d");
+
+let stars = [];
+let shootingStars = [];
+let meteors = [];
+let comets = [];
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = document.body.scrollHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+//// ⭐ STAR FIELD
+for (let i = 0; i < 300; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.5,
+        a: Math.random(),
+        d: Math.random() * 0.02
+    });
+}
+
+//// 🌠 SHOOTING STAR
+function createShootingStar() {
+    shootingStars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height / 2,
+        len: Math.random() * 200 + 100,
+        speed: Math.random() * 12 + 8,
+        alpha: 1
+    });
+}
+setInterval(createShootingStar, 3500);
+
+//// ☄️ METEOR (BESAR + API)
+function createMeteor() {
+    meteors.push({
+        x: Math.random() * canvas.width,
+        y: -100,
+        size: Math.random() * 3 + 4,   // BESAR tapi natural
+        speed: Math.random() * 2 + 3, // LEBIH LAMBAT
+        alpha: 1
+    });
+}
+setInterval(createMeteor, 12000); // ⏱️ MUNCUL SETIAP 12 DETIK
+
+
+//// 🌌 COMET (LENGKUNG)
+function createComet() {
+    comets.push({
+        x: -100,
+        y: Math.random() * canvas.height / 2,
+        len: 400,
+        speed: 3,
+        curve: Math.random() * 0.5 + 0.3,
+        alpha: 1
+    });
+}
+setInterval(createComet, 12000);
+
+//// 🎨 DRAW LOOP
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // ⭐ Stars
+    stars.forEach(s => {
+        s.a += s.d;
+        if (s.a <= 0 || s.a >= 1) s.d *= -1;
+        ctx.fillStyle = `rgba(255,255,255,${s.a})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    // 🌠 Shooting Stars
+    shootingStars.forEach((s, i) => {
+        ctx.strokeStyle = `rgba(255,255,255,${s.alpha})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.len, s.y + s.len);
+        ctx.stroke();
+
+        s.x += s.speed;
+        s.y += s.speed;
+        s.alpha -= 0.02;
+        if (s.alpha <= 0) shootingStars.splice(i, 1);
+    });
+
+    // ☄️ Meteors
+   meteors.forEach((m, i) => {
+    const grad = ctx.createLinearGradient(
+        m.x, m.y,
+        m.x - 120, m.y + 160
+    );
+    grad.addColorStop(0, `rgba(255,180,80,${m.alpha})`);
+    grad.addColorStop(1, "rgba(255,0,0,0)");
+
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = m.size;
+    ctx.beginPath();
+    ctx.moveTo(m.x, m.y);
+    ctx.lineTo(m.x - 120, m.y + 160);
+    ctx.stroke();
+
+    m.x += m.speed;
+    m.y += m.speed * 1.3;
+    m.alpha -= 0.004; // fade lebih lama
+
+    if (m.alpha <= 0) meteors.splice(i, 1);
+});
+
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+const menuBtn = document.getElementById("menuToggle");
+const navMenu = document.getElementById("myNavMenu");
+
+menuBtn.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+    menuBtn.classList.toggle("uil-bars");
+    menuBtn.classList.toggle("uil-times");
+});
+document.querySelectorAll(".nav-link").forEach(link => {
+    link.addEventListener("click", () => {
+        navMenu.classList.remove("active");
+        menuBtn.classList.add("uil-bars");
+        menuBtn.classList.remove("uil-times");
+    });
+});
