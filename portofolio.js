@@ -324,3 +324,17 @@ document.querySelectorAll(".nav-link").forEach(link => {
         menuBtn.classList.remove("uil-times");
     });
 });
+function scrollToTop() {
+    const rocket = document.querySelector('.rocket-btn');
+
+    rocket.classList.add('launch');
+
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
+    setTimeout(() => {
+        rocket.classList.remove('launch');
+    }, 900);
+}
